@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindMyFriend Mockup</title>
+    <style>
+        :root {
+            --bg-color: #fcfcfc;
+            --text-brown: #7A4A33;
+            --pink-accent: #FFB7B2;
+            --pink-button: #FF85A1;
+            --blue-google: #4285F4;
+            --blue-button: #5A9BD5;
+            --border-light: #E0E0E0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2, h3, label {
+            color: var(--text-brown);
+            font-weight: bold;
+        }
+
+        /* Navegación del prototipo */
+        .demo-nav {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .demo-nav button {
+            background-color: #fff;
+            border: 2px solid var(--text-brown);
+            color: var(--text-brown);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .demo-nav button.active, .demo-nav button:hover {
+            background-color: var(--text-brown);
+            color: #fff;
+        }
+
+        /* Contenedor de Pantallas */
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: var(--bg-color);
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 8px solid #333;
+            overflow-y: auto;
+            position: relative;
+            display: none;
+            box-sizing: border-box;
+            padding: 20px;
+        }
+
+        .screen-container.active {
+            display: block;
+        }
+
+        /* Encabezados comunes con flecha */
+        .screen-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .back-arrow {
+            font-size: 24px;
+            color: var(--text-brown);
+            text-decoration: none;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        /* Logotipo Genérico Temporal */
+        .logo-placeholder {
+            text-align: center;
+            margin: 10px 0 20px 0;
+        }
+        .logo-icon {
+            font-size: 50px;
+            line-height: 1;
+        }
+        .logo-text {
+            font-size: 28px;
+            color: #2B7A78;
+            font-weight: bold;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin-top: 5px;
+        }
+
+        /* Formularios e Inputs */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            border: 1.5px solid var(--text-brown);
+            border-radius: 12px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+        }
+
+        /* Botones */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            color: white;
+        }
+
+        .btn-pink { background-color: var(--pink-button); }
+        .btn-blue { background-color: var(--blue-button); }
+        .btn-google-blue { background-color: var(--blue-google); }
+
+        /* PANTALLA 1: Inicio de Sesión */
+        .divider {
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            color: #aaa;
+            font-size: 12px;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 25%;
+            height: 1px;
+            background-color: #ccc;
+        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .google-circle-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--border-light);
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--text-brown);
+        }
+        .footer-text span {
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* PANTALLAS 2 y 3: Cuentas de Google */
+        .google-logo {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .g-g { color: #4285F4; }
+        .g-o1 { color: #EA4335; }
+        .g-o2 { color: #FBBC05; }
+        .g-g2 { color: #4285F4; }
+        .g-l { color: #34A853; }
+        .g-e { color: #EA4335; }
+
+        .account-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .account-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-light);
+            cursor: pointer;
+        }
+
+        .account-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #555;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+
+        .account-email {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .google-action-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            cursor: pointer;
+            color: #333;
+            font-size: 14px;
+        }
+
+        /* PANTALLA 5: Menú */
+        .menu-title {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .menu-option {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--border-light);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            background: white;
+        }
+
+        .menu-option-icon {
+            font-size: 24px;
+            margin-right: 20px;
+        }
+
+        .menu-option-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu-option.opt-adopcion { color: #FF85A1; border-color: #FFB7B2; }
+        .menu-option.opt-veterario { color: #4285F4; border-color: #B3CDE3; }
+        .menu-option.opt-adoptar { color: #7A4A33; border-color: #D6C1B5; }
+
+        .menu-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--pink-button);
+            font-style: italic;
+        }
+
+        /* PANTALLA 6: Adopción */
+        .pet-card {
+            border: 2px solid var(--border-light);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            display: flex;
+            position: relative;
+        }
+
+        .pet-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #FFE5EC;
+            border: 2px dashed var(--pink-button);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            margin-right: 15px;
+        }
+
+        .pet-info {
+            flex: 1;
+        }
+
+        .pet-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #7A4A33;
+            margin: 0;
+        }
+
+        .pet-tags {
+            display: flex;
+            gap: 5px;
+            margin: 5px 0;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .tag-orange { background-color: #FF9F1C; }
+        .tag-pink { background-color: #FF6B6B; }
+        .tag-blue { background-color: #4D96FF; }
+
+        .pet-breed {
+            font-size: 12px;
+            color: #7A4A33;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 5px;
+        }
+
+        .pet-location {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .pet-clinic {
+            font-size: 12px;
+            color: #4285F4;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Selector de pantallas para la demostración -->
+    <div class="demo-nav">
+        <button class="active" onclick="switchScreen('screen1')">1. Login</button>
+        <button onclick="switchScreen('screen2')">2. Google Cuentas</button>
+        <button onclick="switchScreen('screen3')">3. Google Pass</button>
+        <button onclick="switchScreen('screen4')">4. Registro</button>
+        <button onclick="switchScreen('screen5')">5. Menú</button>
+        <button onclick="switchScreen('screen6')">6. Adopción</button>
+    </div>
+
+    <!-- PANTALLA 1: INICIO DE SESIÓN -->
+    <div id="screen1" class="screen-container active">
+        <div class="logo-placeholder">
+            <div class="logo-icon">🤎🐶🐱</div>
+            <div class="logo-text">FindMyFriend</div>
+        </div>
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" class="input-field" placeholder="👤">
+        </div>
+        <div class="form-group">
+            <label>Correo</label>
+            <input type="email" class="input-field" placeholder="✉️">
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" class="input-field" placeholder="🔒">
+        </div>
+        <button class="btn btn-pink" onclick="switchScreen('screen5')">Iniciar sesión</button>
+        
+        <div class="divider">Continuar con Google</div>
+        <div class="google-circle-btn" onclick="switchScreen('screen2')">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69c-.29 1.5-.14 3.01-1.3 4a7.62 7.62 0 0 1-5.39 2.02 8 8 0 1 1 6.63-11.37l3.05-2.37A11.96 11.96 0 0 0 12 0C5.37 0 0 5.37 0 12s5.37 12 12 12c6.24 0 11.74-4.53 11.74-11.73Z"/></svg>
+        </div>
+
+        <div class="footer-text">
+            No tiene cuenta? <span onclick="switchScreen('screen4')">Registrar</span>
+        </div>
+    </div>
+
+    <!-- PANTALLA 2: SESIÓN CON GOOGLE -->
+    <div id="screen2" class="screen-container">
+        <div class="screen-header">
+            <span class="back-arrow" onclick="switchScreen('screen1')">←</span>
+        </div>
+        <div class="google-logo">
+            <span class="g-g">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g2">g</span><span class="g-l">l</span><span class="g-e">e</span>
+        </div>
+        <ul class="account-list">
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #FFB7B2;">👤</div>
+                <div class="account-email">hello703@gmail.com</div>
+            </li>
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #B3CDE3;">👤</div>
+                <div class="account-email">bye903@gmail.com</div>
+            </li>
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #C9E4DE;">👤</div>
+                <div class="account-email">clubs453@gmail.com</div>
+            </li>
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #D8E2DC;">👤</div>
+                <div class="account-email">start373@gmail.com</div>
+            </li>
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #ECE4DB;">👤</div>
+                <div class="account-email">spark843@gmail.com</div>
+            </li>
+            <li class="account-item" onclick="switchScreen('screen3')">
+                <div class="account-icon" style="background-color: #F3C68F;">👤</div>
+                <div class="account-email">space003@gmail.com</div>
+            </li>
+        </ul>
+        <div class="google-action-item">
+            <span style="margin-right:15px; font-size:18px;">👤﹢</span> Usar otra cuenta
+        </div>
+        <div class="google-action-item">
+            <span style="margin-right:15px; font-size:18px;">🗑️</span> Eliminar Cuenta
+        </div>
+    </div>
+
+    <!-- PANTALLA 3: CONTRASEÑA GOOGLE -->
+    <div id="screen3" class="screen-container">
+        <div class="screen-header">
+            <span class="back-arrow" onclick="switchScreen('screen2')">←</span>
+        </div>
+        <div class="google-logo">
+            <span class="g-g">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g2">g</span><span class="g-l">l</span><span class="g-e">e</span>
+        </div>
+        <h3 style="text-align: center; margin-bottom: 5px;">Te damos la Bienvenida</h3>
+        <div style="text-align: center; font-size: 14px; margin-bottom: 20px; color: #555;">
+            👤 hello703@gmail.com
+        </div>
+        
+        <div class="form-group">
+            <label style="color: #4285F4;">Ingrese su contraseña</label>
+            <input type="password" class="input-field" style="border-color: #4285F4;">
+        </div>
+        
+        <div style="margin-bottom: 20px; font-size: 14px;">
+            <input type="checkbox" id="show-pass"> <label style="display:inline;" for="show-pass">Mostrar Contraseña</label>
+        </div>
+
+        <button class="btn btn-google-blue" onclick="switchScreen('screen5')">Siguiente</button>
+    </div>
+
+    <!-- PANTALLA 4: CREAR CUENTA -->
+    <div id="screen4" class="screen-container">
+        <div class="screen-header">
+            <span class="back-arrow" onclick="switchScreen('screen1')">←</span>
+        </div>
+        <h2 style="text-align: center; color: #FF85A1; margin-top: 0;">Cree una Cuenta</h2>
+        
+        <div class="form-group">
+            <label>Usuario o Nombre</label>
+            <input type="text" class="input-field">
+        </div>
+        <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" class="input-field">
+        </div>
+        <div class="form-group">
+            <label>Contraseña</label>
+            <input type="password" class="input-field">
+        </div>
+        <div class="form-group">
+            <label>Verificar Contraseña</label>
+            <input type="password" class="input-field">
+        </div>
+
+        <button class="btn btn-blue" onclick="switchScreen('screen5')">Siguiente</button>
+
+        <div class="logo-placeholder" style="margin-top: 30px;">
+            <div class="logo-icon" style="font-size: 40px;">⁜🐶🐱⁜</div>
+            <div class="logo-text" style="font-size: 22px;">FindMyFriend</div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 5: MENÚ PRINCIPAL -->
+    <div id="screen5" class="screen-container">
+        <div class="screen-header">
+            <span class="back-arrow" onclick="switchScreen('screen1')">←</span>
+        </div>
+        <h3 class="menu-title">Bienvenido al Menú</h3>
+
+        <div class="menu-option opt-adopcion" onclick="switchScreen('screen6')">
+            <div class="menu-option-icon">🏠❤️</div>
+            <div class="menu-option-text">Adopción</div>
+        </div>
+
+        <div class="menu-option opt-veterario">
+            <div class="menu-option-icon">🩺🐾</div>
+            <div class="menu-option-text">Veterinario</div>
+        </div>
+
+        <div class="menu-option opt-adoptar">
+            <div class="menu-option-icon">📋🐾</div>
+            <div class="menu-option-text">Adoptar</div>
+        </div>
+
+        <div class="menu-footer">
+            Adoptar es la mejor forma de amar
+            <div style="font-size: 24px; margin-top: 5px;">❤️🐶🐱</div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 6: ADOPCIÓN -->
+    <div id="screen6" class="screen-container">
+        <div class="screen-header">
+            <span class="back-arrow" onclick="switchScreen('screen5')">←</span>
+            <h3 style="margin: 0; margin-left: 10px;">Adopción</h3>
+        </div>
+
+        <!-- Mascota 1 -->
+        <div class="pet-card">
+            <div class="pet-avatar">🐶</div>
+            <div class="pet-info">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="pet-name">Holy</span>
+                    <div class="pet-tags">
+                        <span class="tag tag-orange">8Kg</span>
+                        <span class="tag tag-pink">2 meses</span>
+                    </div>
+                </div>
+                <div class="pet-breed">Pastor Alemán</div>
+                <div class="pet-location">Veterinaria donde se encuentra:</div>
+                <div class="pet-clinic">📍 Lopez Pets.</div>
+            </div>
+        </div>
+
+        <!-- Mascota 2 -->
+        <div class="pet-card">
+            <div class="pet-avatar">🐶</div>
+            <div class="pet-info">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="pet-name">Martin</span>
+                    <div class="pet-tags">
+                        <span class="tag tag-blue">5Kg</span>
+                        <span class="tag tag-pink">2 meses</span>
+                    </div>
+                </div>
+                <div class="pet-breed">Chihuahua</div>
+                <div class="pet-location">Veterinaria donde se encuentra:</div>
+                <div class="pet-clinic">📍 Lopez Pets.</div>
+            </div>
+        </div>
+
+        <div class="logo-text" style="font-size: 18px; text-align: center; margin-top: 40px; color: var(--pink-button)">
+            ❤️ FindMyFriend 🐾
+        </div>
+    </div>
+
+    <!-- Lógica de navegación simulada -->
+    <script>
+        function switchScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen-container').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Mostrar la pantalla seleccionada
+            document.getElementById(screenId).classList.add('active');
+
+            // Actualizar estilo del botón del menú superior
+            document.querySelectorAll('.demo-nav button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Vincular los botones de arriba a la visualización actual
+            const screenIndex = screenId.replace('screen', '');
+            const targetBtn = document.querySelector(`.demo-nav button:nth-child(${screenIndex})`);
+            if(targetBtn) targetBtn.classList.add('active');
+        }
+    </script>
+</body>
+</html>
